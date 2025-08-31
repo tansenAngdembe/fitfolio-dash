@@ -9,15 +9,24 @@ import {
   TrendingUp,
   Settings,
   Menu,
-  X
+  X,
+  LogOut,
+  User,
+  Shield,
+  Bell,
+  Palette,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
   activeSection: string;
   onSectionChange: (section: string) => void;
+  onLogout: () => void;
 }
 
 const navigation = [
@@ -31,7 +40,7 @@ const navigation = [
   { id: "settings", name: "Settings", icon: Settings },
 ];
 
-export function DashboardLayout({ children, activeSection, onSectionChange }: DashboardLayoutProps) {
+export function DashboardLayout({ children, activeSection, onSectionChange, onLogout }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -88,6 +97,18 @@ export function DashboardLayout({ children, activeSection, onSectionChange }: Da
             })}
           </ul>
         </nav>
+
+        {/* Logout Button at Bottom */}
+        <div className="absolute bottom-4 left-3 right-3">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3 h-11 text-destructive hover:text-destructive hover:bg-destructive/10"
+            onClick={onLogout}
+          >
+            <LogOut className="h-5 w-5" />
+            Logout
+          </Button>
+        </div>
       </div>
 
       {/* Main content */}
@@ -103,12 +124,52 @@ export function DashboardLayout({ children, activeSection, onSectionChange }: Da
           </Button>
           
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                <UserCheck className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <span className="text-sm font-medium">Admin User</span>
-            </div>
+            {/* Admin Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2 h-10">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/placeholder.svg" alt="Admin" />
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      AU
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="hidden md:flex flex-col items-start">
+                    <span className="text-sm font-medium">Admin User</span>
+                    <span className="text-xs text-muted-foreground">admin@gymadmin.com</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => onSectionChange('profile')}>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onSectionChange('account')}>
+                  <Shield className="mr-2 h-4 w-4" />
+                  Account Security
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onSectionChange('notifications')}>
+                  <Bell className="mr-2 h-4 w-4" />
+                  Notifications
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onSectionChange('appearance')}>
+                  <Palette className="mr-2 h-4 w-4" />
+                  Appearance
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => onSectionChange('settings')}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={onLogout} className="text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
