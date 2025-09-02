@@ -9,6 +9,12 @@ import { ClassesManagement } from "@/components/dashboard/ClassesManagement";
 import { Analytics } from "@/components/dashboard/Analytics";
 import { Settings } from "@/components/dashboard/Settings";
 import { SystemConfiguration } from "@/components/dashboard/SystemConfiguration";
+import { HtmlTemplates } from "@/components/dashboard/system/HtmlTemplates";
+import { Careers } from "@/components/dashboard/system/Careers";
+import { About } from "@/components/dashboard/system/About";
+import { DatabaseConfig } from "@/components/dashboard/system/DatabaseConfig";
+import { EmailSettings } from "@/components/dashboard/system/EmailSettings";
+import { SecuritySettings } from "@/components/dashboard/system/SecuritySettings";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -47,7 +53,19 @@ const Index = () => {
       case "analytics":
         return <Analytics />;
       case "system":
-        return <SystemConfiguration />;
+        return <SystemConfiguration onNavigate={setActiveSection} />;
+      case "system-html-templates":
+        return <HtmlTemplates />;
+      case "system-careers":
+        return <Careers />;
+      case "system-about":
+        return <About />;
+      case "system-database-config":
+        return <DatabaseConfig />;
+      case "system-email-settings":
+        return <EmailSettings />;
+      case "system-security":
+        return <SecuritySettings />;
       case "settings":
         return <Settings />;
       case "profile":

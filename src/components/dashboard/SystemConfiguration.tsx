@@ -102,10 +102,13 @@ const systemItems = [
   }
 ];
 
-export function SystemConfiguration() {
+interface SystemConfigurationProps {
+  onNavigate: (section: string) => void;
+}
+
+export function SystemConfiguration({ onNavigate }: SystemConfigurationProps) {
   const handleItemClick = (itemId: string) => {
-    console.log(`Opening ${itemId} configuration`);
-    // Handle navigation to specific configuration page
+    onNavigate(`system-${itemId}`);
   };
 
   return (
