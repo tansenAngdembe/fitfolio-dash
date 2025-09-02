@@ -8,6 +8,7 @@ import { EquipmentManagement } from "@/components/dashboard/EquipmentManagement"
 import { ClassesManagement } from "@/components/dashboard/ClassesManagement";
 import { Analytics } from "@/components/dashboard/Analytics";
 import { Settings } from "@/components/dashboard/Settings";
+import { SystemConfiguration } from "@/components/dashboard/SystemConfiguration";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -45,6 +46,8 @@ const Index = () => {
         return <ClassesManagement />;
       case "analytics":
         return <Analytics />;
+      case "system":
+        return <SystemConfiguration />;
       case "settings":
         return <Settings />;
       case "profile":

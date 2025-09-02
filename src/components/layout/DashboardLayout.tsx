@@ -8,6 +8,7 @@ import {
   Calendar, 
   TrendingUp,
   Settings,
+  Monitor,
   Menu,
   X,
   LogOut,
@@ -37,6 +38,7 @@ const navigation = [
   { id: "equipment", name: "Equipment", icon: Dumbbell },
   { id: "classes", name: "Classes", icon: Calendar },
   { id: "analytics", name: "Analytics", icon: TrendingUp },
+  { id: "system", name: "System", icon: Monitor },
   { id: "settings", name: "Settings", icon: Settings },
 ];
 
