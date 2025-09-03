@@ -4,8 +4,7 @@ import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { MembersManagement } from "@/components/dashboard/MembersManagement";
 import { VendorsManagement } from "@/components/dashboard/VendorsManagement";
 import { AdminsManagement } from "@/components/dashboard/AdminsManagement";
-import { EquipmentManagement } from "@/components/dashboard/EquipmentManagement";
-import { ClassesManagement } from "@/components/dashboard/ClassesManagement";
+import { TrainerManagement } from "@/components/dashboard/TrainerManagement";
 import { Analytics } from "@/components/dashboard/Analytics";
 import { Settings } from "@/components/dashboard/Settings";
 import { SystemConfiguration } from "@/components/dashboard/SystemConfiguration";
@@ -46,10 +45,8 @@ const Index = () => {
         return <VendorsManagement />;
       case "admins":
         return <AdminsManagement />;
-      case "equipment":
-        return <EquipmentManagement />;
-      case "classes":
-        return <ClassesManagement />;
+      case "trainers":
+        return <TrainerManagement />;
       case "analytics":
         return <Analytics />;
       case "system":
