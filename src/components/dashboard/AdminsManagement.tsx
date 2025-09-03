@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Search, Plus, MoreHorizontal, UserCheck, Filter, Shield } from "lucide-react";
 import {
   DropdownMenu,
@@ -82,8 +83,14 @@ const admins = [
   }
 ];
 
-export function AdminsManagement() {
+interface AdminsManagementProps {
+  onAddAdmin: () => void;
+}
+
+export function AdminsManagement({ onAddAdmin }: AdminsManagementProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredAdmins = admins.filter(admin =>
     admin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,6 +99,10 @@ export function AdminsManagement() {
     admin.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
     admin.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredAdmins.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedAdmins = filteredAdmins.slice(startIndex, startIndex + itemsPerPage);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -128,7 +139,7 @@ export function AdminsManagement() {
             Manage administrative users, roles, and system permissions
           </p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={onAddAdmin}>
           <UserCheck className="h-4 w-4" />
           Add Admin
         </Button>
@@ -173,7 +184,7 @@ export function AdminsManagement() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAdmins.map((admin) => (
+                {paginatedAdmins.map((admin) => (
                   <TableRow key={admin.id}>
                     <TableCell className="font-medium">{admin.id}</TableCell>
                     <TableCell>
@@ -230,6 +241,40 @@ export function AdminsManagement() {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-4">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const trainers = [
@@ -101,14 +102,24 @@ const trainers = [
   }
 ];
 
-export function TrainerManagement() {
+interface TrainerManagementProps {
+  onAddTrainer: () => void;
+}
+
+export function TrainerManagement({ onAddTrainer }: TrainerManagementProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredTrainers = trainers.filter(trainer =>
     trainer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     trainer.specialization.toLowerCase().includes(searchTerm.toLowerCase()) ||
     trainer.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredTrainers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedTrainers = filteredTrainers.slice(startIndex, startIndex + itemsPerPage);
 
   const getStatusBadge = (status: string) => {
     const statusColors = {
@@ -146,7 +157,7 @@ export function TrainerManagement() {
             Manage personal trainers, their schedules, specializations, and client assignments
           </p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={onAddTrainer}>
           <Plus className="h-4 w-4" />
           Add Trainer
         </Button>
@@ -184,7 +195,7 @@ export function TrainerManagement() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTrainers.map((trainer) => (
+                {paginatedTrainers.map((trainer) => (
                   <TableRow key={trainer.id}>
                     <TableCell className="font-medium">{trainer.id}</TableCell>
                     <TableCell>
@@ -253,6 +264,40 @@ export function TrainerManagement() {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-4">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

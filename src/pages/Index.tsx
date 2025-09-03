@@ -14,6 +14,10 @@ import { About } from "@/components/dashboard/system/About";
 import { DatabaseConfig } from "@/components/dashboard/system/DatabaseConfig";
 import { EmailSettings } from "@/components/dashboard/system/EmailSettings";
 import { SecuritySettings } from "@/components/dashboard/system/SecuritySettings";
+import { AddAdmin } from "@/components/dashboard/forms/AddAdmin";
+import { AddMember } from "@/components/dashboard/forms/AddMember";
+import { AddVendor } from "@/components/dashboard/forms/AddVendor";
+import { AddTrainer } from "@/components/dashboard/forms/AddTrainer";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -40,13 +44,13 @@ const Index = () => {
       case "dashboard":
         return <DashboardOverview />;
       case "members":
-        return <MembersManagement />;
+        return <MembersManagement onAddMember={() => setActiveSection("add-member")} />;
       case "vendors":
-        return <VendorsManagement />;
+        return <VendorsManagement onAddVendor={() => setActiveSection("add-vendor")} />;
       case "admins":
-        return <AdminsManagement />;
+        return <AdminsManagement onAddAdmin={() => setActiveSection("add-admin")} />;
       case "trainers":
-        return <TrainerManagement />;
+        return <TrainerManagement onAddTrainer={() => setActiveSection("add-trainer")} />;
       case "analytics":
         return <Analytics />;
       case "system":
@@ -63,6 +67,14 @@ const Index = () => {
         return <EmailSettings />;
       case "system-security":
         return <SecuritySettings />;
+      case "add-admin":
+        return <AddAdmin onBack={() => setActiveSection("admins")} />;
+      case "add-member":
+        return <AddMember onBack={() => setActiveSection("members")} />;
+      case "add-vendor":
+        return <AddVendor onBack={() => setActiveSection("vendors")} />;
+      case "add-trainer":
+        return <AddTrainer onBack={() => setActiveSection("trainers")} />;
       case "settings":
         return <Settings />;
       case "profile":
